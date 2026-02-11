@@ -1,0 +1,6 @@
+numpy
+requests
+sqlalchemy
+scikit-learn
+psycopg2-binary
+pgvector
