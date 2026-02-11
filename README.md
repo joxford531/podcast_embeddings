@@ -1,6 +1,6 @@
 # podcast_embeddings
 
-Minimal repo for the topic extraction script: clusters transcript chunks by embedding, labels clusters via Fireworks LLM, prints top topics to stdout.
+Scripts for working with podcast transcript embeddings: **semantic search** (Fireworks + pgvector) and **topic extraction** (K-means + LLM labeling).
 
 ## Install
 
@@ -23,6 +23,16 @@ Example: last 100 episodes of podcast 1, top 20 topics:
 ```bash
 python topic_extraction_service.py --podcast-id 1 --last-n-episodes 100
 ```
+
+### Semantic search
+
+Embed a query with Fireworks (Qwen3-embedding-8b), find closest transcript chunks, print episode and text (limit 20):
+
+```bash
+python semantic_search.py "your search query" [--podcast-id N] [-n 20]
+```
+
+Same env vars; optional `--podcast-id` to restrict to one podcast.
 
 For all options, env vars, and behavior, see **`docs/`**:
 

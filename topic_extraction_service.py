@@ -385,12 +385,12 @@ def _print_results(sorted_clusters, by_cluster, distinct_episode_count, topic_na
         episode_count = distinct_episode_count(cid)
         pct_chunks = 100.0 * chunk_count / total_chunks
         name = topic_names[cid]
-        ep_str = f"{episode_count} eps (≥{min_chunks_per_episode} chunks)" if min_chunks_per_episode > 1 else f"{episode_count} eps"
+        ep_str = f"{episode_count} episodes"
         line = f"{rank}. {name} — {chunk_count} chunks ({pct_chunks:.1f}%) | {ep_str}"
         if args.show_keywords:
             kw = ", ".join(cluster_keywords.get(cid, []))
             line += f"\n   keywords: {kw}"
-        print(line)
+        print(line + "\n")
 
 
 def main():
