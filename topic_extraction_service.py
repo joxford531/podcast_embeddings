@@ -253,7 +253,7 @@ def label_cluster(fireworks_api_key, cluster_chunks, cluster_id, base_url, model
 Here are a few representative excerpts for context:
 {text_blob}
 
-Based on the keywords and excerpts, give a short topic name (2–6 words) that captures what this cluster is about. The name MUST reflect the keywords — do not name the topic after a detail, person, or phrase that does not appear in the keyword list. Use plain, recognizable terms.
+Based on the keywords and excerpts, give a short topic name (5–10 words) that captures what this cluster is about. The name MUST reflect the keywords — do not name the topic after a detail, person, or phrase that does not appear in the keyword list. Use plain, recognizable terms.
 
 Reply with only the topic name, nothing else."""
     url = f"{base_url.rstrip('/')}/chat/completions"
@@ -275,10 +275,10 @@ Reply with only the topic name, nothing else."""
             if not label:
                 return f"Topic {cluster_id}", False
             return label, True
-        except requests.RequestException:
+        except requests.RequestException as e:
             if "reasoning_effort" in payload:
                 continue
-            print(f"Warning: could not label cluster {cluster_id}", file=sys.stderr)
+            print(f"Warning: could not label cluster {cluster_id}: {e}", file=sys.stderr)
             return f"Topic {cluster_id}", False
         except (KeyError, IndexError, TypeError) as e:
             print(f"Warning: could not parse response for cluster {cluster_id}: {e}", file=sys.stderr)
@@ -299,7 +299,7 @@ def _parse_args():
     parser.add_argument("--first-n-episodes", type=int, default=None, metavar="N", help="Only chunks from first N episodes (by episode id)")
     parser.add_argument("--last-n-episodes", type=int, default=None, metavar="N", help="Only chunks from most recent N episodes (by date_published desc)")
     parser.add_argument("--fireworks-base-url", type=str, default=os.getenv("FIREWORKS_API_BASE_URL", "https://api.fireworks.ai/inference/v1"))
-    parser.add_argument("--fireworks-model", type=str, default=os.getenv("FIREWORKS_CHAT_MODEL", "accounts/fireworks/models/qwen3-235b-a22b"))
+    parser.add_argument("--fireworks-model", type=str, default=os.getenv("FIREWORKS_CHAT_MODEL", "accounts/fireworks/models/qwen3-8b"))
     parser.add_argument("--semantic", action="store_true", help="L2-normalize + no scaling (semantic clustering)")
     parser.add_argument("--n-init", type=int, default=10, metavar="N")
     parser.add_argument("--max-iter", type=int, default=300, metavar="N")
